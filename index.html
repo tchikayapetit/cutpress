@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CutPress</title>
+<meta name="description" content="Turn a word or a photo into a match cut across real-looking newspapers, magazines and books. Runs 100% in your browser.">
+<meta name="theme-color" content="#ecebe6">
+<meta name="color-scheme" content="light dark">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="CutPress">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<script>try{var __t=localStorage.getItem("cutpress.theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.dataset.theme=__t;}catch(e){}</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23e5322d'/%3E%3Ctext x='32' y='45' font-family='Georgia' font-weight='700' font-size='36' text-anchor='middle' fill='%23fff'%3EC%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Bodoni+Moda:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600;700;800&family=Libre+Franklin:ital,wght@0,400;0,700;0,800;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400;1,6..72,500&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,700;1,400&family=Source+Serif+4:ital,wght@0,400;1,400&family=UnifrakturMaguntia&family=Rye&family=Permanent+Marker&family=Oswald:wght@500;700&display=swap">
+<link rel="stylesheet" href="css/app.css?v=24">
+</head>
+<body>
+<div id="loading"><div class="spinner"></div><p id="loading-msg">Setting the type…</p></div>
+
+<header class="mast">
+  <div class="mast-in">
+    <a class="logo" href="#" aria-label="CutPress">CutPress<span>.</span></a>
+    <div class="mode seg" data-seg="mode" role="group" aria-label="Mode">
+      <button type="button" data-v="word">Word cut</button>
+      <button type="button" data-v="photo">Photo cut</button>
+    </div>
+    <div class="tools">
+      <button type="button" id="nav-sounds" class="ghost" aria-label="Sound library" title="Sound library">♪<span> Sound library</span></button>
+      <button type="button" id="install-btn" class="ghost" hidden aria-label="Install the app" title="Install the app">⤓<span> Install</span></button>
+      <a href="how.html" id="how-link" class="ghost" title="How it works">How it works</a>
+      <button type="button" id="lang-toggle" class="ghost icon" aria-label="Language" title="Language">FR</button>
+      <button type="button" id="theme-toggle" class="ghost icon" aria-label="Dark theme" title="Dark theme">☾</button>
+    </div>
+  </div>
+</header>
+
+<main class="app">
+  <section class="stage">
+    <div class="phone">
+      <canvas id="mc-canvas" width="720" height="1280" aria-label="Video preview"></canvas>
+      <button type="button" id="mc-play-overlay" class="play-overlay" aria-label="Play preview">▶</button>
+    </div>
+    <div class="scrub">
+      <button type="button" id="mc-play" class="mini">▶ Preview</button>
+      <input id="mc-scrub" type="range" min="0" max="5" step="0.001" value="0" aria-label="Timeline">
+      <span id="mc-time" class="mono">0:00.0</span>
+    </div>
+    <p id="mc-info" class="mono info"></p>
+  </section>
+
+  <section class="panel">
+    <p class="intro word-only">Type a line, pick the word, and it flies through real-looking newspapers, magazines and books.</p>
+    <p class="intro photo-only">Your photo gets printed in newspaper after newspaper, cut on the beat.</p>
+
+    <div class="step">
+      <div class="step-h"><span class="num">1</span><h2 class="word-only">Your words</h2><h2 class="photo-only">Your photo</h2></div>
+      <div class="word-only">
+        <div class="phrase-box">
+          <input id="mc-phrase" type="text" maxlength="80" placeholder="Type a short line" autocomplete="off" spellcheck="false" aria-label="Your words">
+          <span class="count mono" id="mc-count">0</span>
+        </div>
+        <p class="hint">Tap the word to highlight. Pick several to cut between them.</p>
+        <div id="mc-words" class="words"></div>
+      </div>
+      <div class="photo-only">
+        <div id="mc-drop" class="drop" role="button" tabindex="0">
+          <span class="drop-ico">＋</span><span id="mc-drop-label">Drop a photo here or tap to choose</span>
+        </div>
+        <input id="mc-photo-file" type="file" accept="image/*" multiple hidden>
+        <div id="mc-photo-thumbs" class="pthumbs"></div>
+        <label class="lbl" for="mc-headline">Headline printed above the photo</label>
+        <input id="mc-headline" type="text" maxlength="90" placeholder="e.g. Local bakery opens its doors">
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-h"><span class="num">2</span><h2>Pick the papers</h2><button type="button" id="mc-remix" class="link">↻ Shuffle</button></div>
+      <div id="mc-groups" class="pills scroll groups"></div>
+      <div class="sel-row"><span id="mc-styles-count" class="hint"></span><span><button type="button" id="mc-styles-all" class="link">Select all shown</button> · <button type="button" id="mc-styles-none" class="link">Clear shown</button></span></div>
+      <div id="mc-styles" class="style-grid"></div>
+      <div class="row">
+        <div class="seg" data-seg="aspect" role="group" aria-label="Video shape">
+          <button type="button" data-v="9:16">9:16</button><button type="button" data-v="4:5">4:5</button><button type="button" data-v="1:1">1:1</button><button type="button" data-v="16:9">16:9</button>
+        </div>
+        <div class="seg swatches" data-seg="marker" role="group" aria-label="Highlight">
+          <button type="button" data-v="yellow" title="Yellow highlighter"><i style="background:#ffe14a"></i></button>
+          <button type="button" data-v="pink" title="Pink highlighter"><i style="background:#ff9ec4"></i></button>
+          <button type="button" data-v="green" title="Green highlighter"><i style="background:#a8f08a"></i></button>
+          <button type="button" data-v="blue" title="Blue highlighter"><i style="background:#9fd6ff"></i></button>
+          <button type="button" data-v="pen" title="Red pen underline"><i class="pen"></i></button>
+          <button type="button" data-v="circle" title="Red pen circle"><i class="circ"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-h"><span class="num">3</span><h2>Length &amp; speed</h2><button type="button" id="mc-speed-reset" class="link">Use our default</button></div>
+      <label class="slider"><span class="flabel">Video length <output for="mc-length"></output></span><input id="mc-length" type="range" min="2" max="60" step="0.5" data-mc="length" data-fmt="s"></label>
+      <label class="slider"><span class="flabel">Cut speed <output for="mc-cps"></output></span><input id="mc-cps" type="range" min="0.5" max="15" step="0.5" data-mc="cps" data-fmt="cps"></label>
+      <p class="hint">Slow (left) to very fast (right). With music, the speed locks to the beat.</p>
+      <label class="check photo-only"><input type="checkbox" data-mc="oldLook"> Old paper look (sepia, faded, grainy)</label>
+    </div>
+
+    <div class="step">
+      <div class="step-h"><span class="num">4</span><h2>Sound</h2><button type="button" id="mc-music-browse" class="link">Library →</button></div>
+      <div class="sound-card" id="mc-music-card"></div>
+      <input id="mc-audio-file" type="file" accept="audio/*" hidden>
+      <div id="mc-wave-wrap" hidden>
+        <canvas id="mc-wave" aria-label="Track waveform. Click to set the drop point."></canvas>
+        <p class="hint" id="mc-wave-info"></p>
+        <p class="hint">The red line is where the cut lands. Click the waveform to move it.</p>
+      </div>
+      <p class="lbl">On every cut <button type="button" class="link" data-sfx-browse="cutSfx">more</button></p>
+      <div id="mc-cut-pills" class="pills"></div>
+      <p class="lbl">On the last frame <button type="button" class="link" data-sfx-browse="revealSfx">more</button></p>
+      <div id="mc-reveal-pills" class="pills"></div>
+    </div>
+
+    <button type="button" id="mc-export" class="make">Make my video</button>
+    <p class="hint center">Made in your browser and saved to your downloads. Nothing is uploaded.</p>
+    <button type="button" class="ghost share-btn wide" hidden>↗ Share last video</button>
+    <div class="actions">
+      <button type="button" id="mc-saveproj" class="ghost sm">💾 Save project</button>
+      <button type="button" id="mc-mywork" class="ghost sm">📂 My projects</button>
+      <button type="button" id="mc-videos" class="ghost sm">🎞 My videos</button>
+      <button type="button" id="mc-sharelink" class="ghost sm">🔗 Copy link</button>
+    </div>
+    <p class="hint center">The link keeps your text and settings, not your photos. Projects and videos stay on this device.</p>
+
+    <details class="more">
+      <summary>More options</summary>
+      <div class="presets"><span class="lbl">Quick looks</span><div id="mc-templates" class="pills"></div></div>
+      <div class="grid2">
+        <div class="field full">
+          <span class="flabel">Ending</span>
+          <div class="seg small" data-seg="ending"><button type="button" data-v="hold">Last cut</button><button type="button" data-v="front">Front page</button></div>
+        </div>
+        <label class="field"><span class="flabel">Depth blur <output for="mc-dof"></output></span><input id="mc-dof" type="range" min="0" max="2" step="0.1" data-mc="dof" data-fmt="x"></label>
+        <label class="field"><span class="flabel">Zoom <output for="mc-zoom"></output></span><input id="mc-zoom" type="range" min="0" max="2" step="0.1" data-mc="zoom" data-fmt="x"></label>
+        <label class="field"><span class="flabel">Motion blur <output for="mc-blur"></output></span><input id="mc-blur" type="range" min="0" max="2" step="0.1" data-mc="blur" data-fmt="x"></label>
+        <label class="field"><span class="flabel">Text size <output for="mc-textScale"></output></span><input id="mc-textScale" type="range" min="0.6" max="1.6" step="0.05" data-mc="textScale" data-fmt="x"></label>
+        <label class="field"><span class="flabel">Hold at end <output for="mc-hold"></output></span><input id="mc-hold" type="range" min="0.5" max="6" step="0.1" data-mc="hold" data-fmt="s"></label>
+        <label class="field"><span class="flabel">Tempo <output for="mc-bpm"></output> BPM</span><input id="mc-bpm" type="range" min="60" max="180" step="0.5" data-mc="bpm"></label>
+        <label class="field"><span class="flabel">Music volume</span><input type="range" min="0" max="1.2" step="0.05" data-mc="musicVol"></label>
+        <label class="field"><span class="flabel">Effects volume</span><input type="range" min="0" max="1.2" step="0.05" data-mc="sfxVol"></label>
+        <div class="field full checks">
+          <label class="check"><input type="checkbox" data-mc="accel"> Speed up</label>
+          <label class="check"><input type="checkbox" data-mc="riser"> Riser</label>
+          <label class="check"><input type="checkbox" data-mc="shake"> Shake</label>
+          <label class="check"><input type="checkbox" data-mc="flash"> Flash</label>
+          <label class="check"><input type="checkbox" data-mc="grain"> Film grain</label>
+          <label class="check"><input type="checkbox" data-mc="vignette"> Vignette</label>
+          <label class="check"><input type="checkbox" data-mc="upper"> CAPITALS</label>
+          <label class="check"><input type="checkbox" data-mc="loop"> Loop preview</label>
+        </div>
+        <label class="field full"><span class="flabel">Your brand or paper name (replaces the mastheads)</span><input id="mc-brand" type="text" maxlength="40" data-mc="brand" placeholder="e.g. Douala Daily"></label>
+        <label class="field full"><span class="flabel">Caption / sub-headline</span><input id="mc-caption" type="text" maxlength="120" placeholder="e.g. Opening this Friday at 8pm"></label>
+        <label class="field"><span class="flabel">Front page style</span><select id="mc-finalStyle" data-mc="finalStyle"></select></label>
+        <div class="field">
+          <span class="flabel">Own highlight color</span>
+          <span class="inline"><input type="checkbox" data-mc="hlCustom" aria-label="Use own color"><input type="color" data-mc="hlColor" aria-label="Highlight color"></span>
+        </div>
+        <label class="field full"><span class="flabel">Logo on the front page</span><input id="mc-logo" type="file" accept="image/*"></label>
+        <div id="mc-logo-row" class="field full" hidden><button type="button" id="mc-logo-remove" class="link danger">Remove logo</button></div>
+        <label class="field"><span class="flabel">Quality</span><select data-mc="quality"><option value="720">720p · fast</option><option value="1080">1080p · HD</option></select></label>
+        <label class="field"><span class="flabel">Frame rate</span><select data-mc="fps" data-num><option value="30">30 fps</option><option value="60">60 fps</option></select></label>
+        <label class="field"><span class="flabel">File type</span><select data-mc="format"><option value="auto">MP4</option><option value="webm">WebM</option></select></label>
+        <div class="field">
+          <span class="flabel">Several versions</span>
+          <span class="inline"><select id="mc-batch-n" aria-label="How many"><option>3</option><option>5</option><option>10</option></select><button type="button" id="mc-batch" class="ghost sm">Export</button></span>
+        </div>
+        <div class="field full">
+          <span class="flabel">Project file</span>
+          <span class="inline"><button type="button" id="mc-save" class="ghost sm">Save</button><button type="button" id="mc-load" class="ghost sm">Open</button></span>
+          <input id="mc-load-file" type="file" accept=".json,application/json" hidden>
+        </div>
+      </div>
+    </details>
+  </section>
+</main>
+
+<div id="lib" hidden>
+  <div class="lib-box" role="dialog" aria-modal="true" aria-labelledby="lib-title">
+    <header class="lib-head">
+      <div class="lib-top">
+        <h2 id="lib-title">Sound library</h2>
+        <button type="button" id="lib-close" class="lib-x" aria-label="Close">✕</button>
+      </div>
+      <div class="lib-tabs" role="tablist">
+        <button type="button" class="lib-tab on" data-kind="sfx" role="tab">Sound effects <span id="lib-count-sfx" class="mono"></span></button>
+        <button type="button" class="lib-tab" data-kind="music" role="tab">Music <span id="lib-count-music" class="mono"></span></button>
+      </div>
+      <input id="lib-search" type="search" placeholder="Search: paper, camera, typewriter, afro, dark…" aria-label="Search sounds">
+      <div id="lib-cats" class="pills scroll"></div>
+    </header>
+    <div id="lib-list" class="lib-list"></div>
+    <footer class="lib-foot">Every sound is created on your device, free to use in your videos, including commercial work.</footer>
+  </div>
+</div>
+
+<div id="work" hidden>
+  <div class="lib-box" role="dialog" aria-modal="true" aria-labelledby="work-title">
+    <header class="lib-head">
+      <div class="lib-top">
+        <h2 id="work-title">My work</h2>
+        <button type="button" id="work-close" class="lib-x" aria-label="Close">✕</button>
+      </div>
+      <div class="lib-tabs" role="tablist">
+        <button type="button" class="lib-tab work-tab on" data-tab="projects" role="tab">Projects</button>
+        <button type="button" class="lib-tab work-tab" data-tab="videos" role="tab">Videos</button>
+      </div>
+    </header>
+    <div id="work-list" class="lib-list"></div>
+    <footer id="work-foot" class="lib-foot"></footer>
+  </div>
+</div>
+
+<footer class="site-foot">
+  <a href="how.html">How it works</a><span>·</span><a href="sounds/CREDITS.md" target="_blank" rel="noopener">Sound credits</a><span>·</span><span>Made in your browser. Nothing is uploaded.</span>
+</footer>
+
+<div id="export-overlay" hidden>
+  <div class="export-box" role="dialog" aria-modal="true" aria-labelledby="export-title">
+    <h2 id="export-title">Printing your video…</h2>
+    <div class="bar"><div id="export-bar"></div></div>
+    <p class="mono"><span id="export-pct">0%</span> · keep this tab open</p>
+    <button type="button" id="export-cancel" class="ghost sm">Cancel</button>
+  </div>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script src="js/i18n.js?v=22"></script>
+<script src="js/vendor/mp4-muxer.min.js"></script>
+<script src="js/util.js?v=22"></script>
+<script src="js/corpus.js?v=22"></script>
+<script src="js/audio.js?v=22"></script>
+<script src="js/stock.js?v=22"></script>
+<script src="js/paper.js?v=22"></script>
+<script src="js/templates.js?v=22"></script>
+<script src="js/recorder.js?v=22"></script>
+<script src="js/fastexport.js?v=22"></script>
+<script src="js/store.js?v=22"></script>
+<script src="js/sounds.js?v=22"></script>
+<script src="js/matchcut.js?v=22"></script>
+<script src="js/app.js?v=23"></script>
+</body>
+</html>

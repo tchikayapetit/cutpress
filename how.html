@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>How it works · CutPress</title>
+<meta name="description" content="How to make a match cut video: write a word or add a photo, pick the papers, choose the sound and make your video. Works offline. Nothing is uploaded.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#ecebe6">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<script>try{var __t=localStorage.getItem("cutpress.theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.dataset.theme=__t;var __l=localStorage.getItem("cutpress.lang")||((navigator.language||"en").toLowerCase().indexOf("fr")===0?"fr":"en");document.documentElement.lang=__l;}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap">
+<link rel="stylesheet" href="css/app.css?v=22">
+<link rel="stylesheet" href="css/how.css?v=22">
+</head>
+<body>
+<header class="mast how-top">
+  <div class="mast-in">
+    <a class="logo" href="index.html" aria-label="CutPress">CutPress<span>.</span></a>
+    <div class="tools">
+      <a class="ghost" id="back" href="index.html">← App</a>
+      <button type="button" id="lang-toggle" class="ghost icon" aria-label="Language">FR</button>
+      <button type="button" id="theme-toggle" class="ghost icon" aria-label="Theme">☾</button>
+    </div>
+  </div>
+</header>
+<main class="how" id="root"></main>
+
+<script>
+(function () {
+  const C = [
+    { h: ['Highlight a word. Get a <mark>match cut</mark>.', 'Surlignez un mot. Obtenez un <mark>match cut</mark>.'], hero: true,
+      p: [['A match cut is a very fast video where the same word (or photo) stays in place while the page around it keeps changing: a newspaper, a magazine, a poster, a wanted notice. This app makes one in about a minute, on your phone or computer, for free.',
+           'Un match cut est une vidéo très rapide où le même mot (ou la même photo) reste en place pendant que la page autour change sans cesse : journal, magazine, affiche, avis de recherche. Cette application en crée un en une minute environ, sur téléphone ou ordinateur, gratuitement.']] },
+    { h: ['Make a video in 4 steps', 'Créez une vidéo en 4 étapes'], steps: [
+      [['Write or add a photo', 'Écrivez ou ajoutez une photo'], ['Type a short line and tap the word to highlight. In Photo cut, add a photo and a headline.', 'Écrivez une courte phrase et touchez le mot à surligner. En mode Photo, ajoutez une photo et un titre.']],
+      [['Pick the papers', 'Choisissez les journaux'], ['Choose from more than 50 looks: old front pages, magazines, web pages, wanted posters and more.', 'Choisissez parmi plus de 50 styles : vieilles unes, magazines, pages web, avis de recherche et plus.']],
+      [['Set length, speed and sound', 'Réglez durée, vitesse et son'], ['Slide the length from 2 to 60 seconds and the speed from slow to very fast. Add music and a sound on every cut.', 'Choisissez la durée de 2 à 60 secondes et la vitesse de lente à très rapide. Ajoutez une musique et un son à chaque coupe.']],
+      [['Make my video', 'Créer ma vidéo'], ['Press the red button. Your MP4 is saved to your downloads, ready for TikTok, Reels or Shorts.', 'Appuyez sur le bouton rouge. Votre MP4 est enregistré dans vos téléchargements, prêt pour TikTok, Reels ou Shorts.']],
+    ] },
+    { h: ['Word cut and Photo cut', 'Mot et Photo'],
+      p: [['<b>Word cut:</b> your word stays locked in the centre of the screen. Every frame is a different printed page, filmed from a different angle, with real sentences around your word.', '<b>Mot :</b> votre mot reste verrouillé au centre de l’écran. Chaque image est une page imprimée différente, filmée sous un autre angle, avec de vraies phrases autour de votre mot.'],
+          ['<b>Photo cut:</b> your photo is printed on page after page. The camera moves, zooms and tilts, so the photo lands in a different place each time. The “Old paper look” option adds sepia, fading and grain.', '<b>Photo :</b> votre photo est imprimée de page en page. La caméra bouge, zoome et s’incline : la photo tombe à un endroit différent chaque fois. L’option « Effet vieux papier » ajoute du sépia, de l’usure et du grain.']] },
+    { h: ['Length and speed', 'Durée et vitesse'],
+      ul: [['Length: from 2 to 60 seconds. The cuts run until the end, then the last frame holds for a moment.', 'Durée : de 2 à 60 secondes. Les coupes durent jusqu’à la fin, puis la dernière image reste un instant.'],
+           ['Speed: from 0.5 to 15 cuts per second. Our default is 8. “Use our default” puts it back.', 'Vitesse : de 0,5 à 15 coupes par seconde. Notre valeur par défaut est 8. « Valeurs par défaut » la rétablit.'],
+           ['With music, the speed locks to the beat so every cut lands on the music.', 'Avec de la musique, la vitesse suit le rythme : chaque coupe tombe sur la musique.']] },
+    { h: ['Sound', 'Son'],
+      ul: [['The sound library has real recordings (camera shutters, page turns, a typewriter bell) and many generated effects: paper, film advance, flash, whooshes, impacts.', 'La bibliothèque sonore contient de vrais enregistrements (déclencheurs d’appareil photo, pages tournées, sonnette de machine à écrire) et de nombreux effets générés : papier, avance de pellicule, flash, whoosh, impacts.'],
+           ['There are 34 music tracks in 14 genres. You can also upload your own song: the app finds its tempo and the best drop point, and you can move it on the waveform.', 'Il y a 34 morceaux dans 14 genres. Vous pouvez aussi importer votre musique : l’application trouve son tempo et le meilleur point de chute, que vous pouvez déplacer sur l’onde.'],
+           ['Every sound can be previewed, saved as a favourite or downloaded as a WAV file.', 'Chaque son peut être écouté, mis en favori ou téléchargé en WAV.']] },
+    { h: ['Save, share and keep your work', 'Enregistrer, partager et garder vos créations'],
+      ul: [['<b>Save project:</b> keeps your text, photos and settings on this device. Open it again from “My projects”.', '<b>Enregistrer le projet :</b> garde votre texte, vos photos et vos réglages sur cet appareil. Rouvrez-le depuis « Mes projets ».'],
+           ['<b>My videos:</b> your last 12 videos are kept on this device so you can play or download them again.', '<b>Mes vidéos :</b> vos 12 dernières vidéos sont gardées sur cet appareil pour les relire ou les retélécharger.'],
+           ['<b>Copy link:</b> makes a link with your exact text and settings. Anyone who opens it sees the same setup. Photos are not part of the link.', '<b>Copier le lien :</b> crée un lien avec votre texte et vos réglages exacts. Quiconque l’ouvre retrouve la même configuration. Les photos ne sont pas dans le lien.'],
+           ['<b>Project file:</b> under “More options”, save a file to move a project to another device.', '<b>Fichier de projet :</b> dans « Plus d’options », enregistrez un fichier pour déplacer un projet vers un autre appareil.']] },
+    { h: ['Install it and use it offline', 'Installez-la et utilisez-la hors ligne'],
+      p: [['After your first visit, the app works without internet: the pages, sounds and stock pictures are stored on your device. That saves mobile data.', 'Après votre première visite, l’application fonctionne sans internet : les pages, les sons et les images sont gardés sur votre appareil. Cela économise vos données mobiles.']],
+      ul: [['<b>Android / Chrome / Edge:</b> press the “Install” button at the top, or open the browser menu and choose “Install app”.', '<b>Android / Chrome / Edge :</b> appuyez sur « Installer » en haut, ou ouvrez le menu du navigateur et choisissez « Installer l’application ».'],
+           ['<b>iPhone / iPad (Safari):</b> tap the Share icon, then “Add to Home Screen”.', '<b>iPhone / iPad (Safari) :</b> touchez l’icône Partager, puis « Sur l’écran d’accueil ».']] },
+    { h: ['Your privacy', 'Votre vie privée'],
+      p: [['Everything happens in your browser: typing, drawing the pages, making the sound and encoding the video. Your photos, text and videos are never sent to a server.', 'Tout se passe dans votre navigateur : saisie, dessin des pages, création du son et encodage de la vidéo. Vos photos, textes et vidéos ne sont jamais envoyés à un serveur.'],
+          ['The app only downloads shared resources: fonts, free stock photos (Unsplash) and old newspaper scans in the public domain (Wikimedia Commons). Once stored, they work offline.', 'L’application ne télécharge que des ressources partagées : polices, photos libres (Unsplash) et scans de vieux journaux du domaine public (Wikimedia Commons). Une fois gardés, ils fonctionnent hors ligne.']] },
+    { h: ['Fast export', 'Export rapide'],
+      p: [['In Chrome, Edge and recent Safari, the video is encoded frame by frame and finishes much faster than its length. Other browsers record in real time (keep the tab open). Firefox saves WebM instead of MP4.', 'Dans Chrome, Edge et Safari récent, la vidéo est encodée image par image et se termine bien plus vite que sa durée. Les autres navigateurs enregistrent en temps réel (gardez l’onglet ouvert). Firefox enregistre en WebM au lieu de MP4.']] },
+    { h: ['Shortcuts', 'Raccourcis'],
+      ul: [['<kbd>Space</kbd> play or pause the preview', '<kbd>Espace</kbd> lire ou mettre en pause l’aperçu'], ['<kbd>/</kbd> jump to the text box', '<kbd>/</kbd> aller au champ de texte'], ['<kbd>Enter</kbd> in the text box: preview', '<kbd>Entrée</kbd> dans le champ de texte : aperçu'], ['Select words in the text box to highlight them', 'Sélectionnez des mots dans le champ de texte pour les surligner']] },
+    { h: ['Questions', 'Questions'], faq: [
+      [['My video did not download.', 'Ma vidéo ne s’est pas téléchargée.'], ['Allow downloads for this site, and keep the tab visible while it works. Your last videos are also in “My videos”.', 'Autorisez les téléchargements pour ce site et gardez l’onglet visible pendant le travail. Vos dernières vidéos sont aussi dans « Mes vidéos ».']],
+      [['Can I use the videos for business?', 'Puis-je utiliser les vidéos pour mon activité ?'], ['Yes. The text and names on the pages are invented and the sounds come with free licences. See the sound credits for the recordings.', 'Oui. Les textes et noms sur les pages sont inventés et les sons ont des licences libres. Consultez les crédits sonores pour les enregistrements.']],
+      [['Why do some pictures look different offline?', 'Pourquoi certaines images changent hors ligne ?'], ['The stock photos and old newspaper scans are only stored after you have seen them once online. Until then, drawn pictures are used instead.', 'Les photos et les scans de vieux journaux ne sont gardés qu’après les avoir vus une fois en ligne. D’ici là, des images dessinées les remplacent.']],
+      [['Can I get my work on another phone?', 'Puis-je retrouver mon travail sur un autre téléphone ?'], ['Use “Copy link” for text and settings, or save a project file under “More options” and open it on the other device.', 'Utilisez « Copier le lien » pour le texte et les réglages, ou enregistrez un fichier de projet dans « Plus d’options » et ouvrez-le sur l’autre appareil.']],
+    ] },
+  ];
+  const UI = { cta: ['Start making a video', 'Créer une vidéo'], back: ['← App', '← Appli'], credits: ['Sound credits', 'Crédits sonores'], theme: ['Dark theme', 'Thème sombre'], light: ['Light theme', 'Thème clair'], lang: ['Français', 'English'] };
+  const root = document.getElementById('root');
+  const lang = () => (document.documentElement.lang === 'fr' ? 1 : 0);
+  function render() {
+    const l = lang();
+    let h = '';
+    for (const s of C) {
+      h += s.hero ? '<div>' : '<section>';
+      h += s.hero ? `<h1>${s.h[l]}</h1>` : `<h2>${s.h[l]}</h2>`;
+      if (s.hero) h += s.p.map((p) => `<p class="lead">${p[l]}</p>`).join('');
+      else if (s.p) h += s.p.map((p) => `<p>${p[l]}</p>`).join('');
+      if (s.steps) h += '<ol class="steps">' + s.steps.map((st, i) => `<li><span class="n">${i + 1}</span><b>${st[0][l]}</b>${st[1][l]}</li>`).join('') + '</ol>';
+      if (s.ul) h += '<ul>' + s.ul.map((x) => `<li>${x[l]}</li>`).join('') + '</ul>';
+      if (s.faq) h += s.faq.map((f) => `<details><summary>${f[0][l]}</summary><p>${f[1][l]}</p></details>`).join('');
+      h += s.hero ? '</div>' : '</section>';
+    }
+    h += `<div class="cta-row"><a class="btn-go" href="index.html">${UI.cta[l]}</a><a class="ghost" href="sounds/CREDITS.md">${UI.credits[l]}</a></div>`;
+    root.innerHTML = h;
+    document.getElementById('back').textContent = UI.back[l];
+    document.getElementById('lang-toggle').textContent = l ? 'EN' : 'FR';
+    document.getElementById('lang-toggle').title = UI.lang[l];
+    const dark = document.documentElement.dataset.theme === 'dark';
+    const tb = document.getElementById('theme-toggle');
+    tb.textContent = dark ? '☀' : '☾';
+    tb.title = dark ? UI.light[l] : UI.theme[l];
+    document.title = (l ? 'Comment ça marche' : 'How it works') + ' · CutPress';
+  }
+  document.getElementById('lang-toggle').onclick = () => {
+    const n = lang() ? 'en' : 'fr';
+    document.documentElement.lang = n;
+    try { localStorage.setItem('cutpress.lang', n); } catch (e) {}
+    render();
+  };
+  document.getElementById('theme-toggle').onclick = () => {
+    const n = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = n;
+    try { localStorage.setItem('cutpress.theme', n); } catch (e) {}
+    render();
+  };
+  render();
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) navigator.serviceWorker.register('sw.js').catch(() => {});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "CutPress — match cut maker",
+  "short_name": "CutPress",
+  "description": "Turn a word or a photo into a match cut across real-looking newspapers, magazines and posters. Works offline. Nothing is uploaded.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#ecebe6",
+  "theme_color": "#e5322d",
+  "categories": ["photo", "video", "design"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

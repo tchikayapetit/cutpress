@@ -2,6 +2,18 @@
 (function () {
   const U = (window.U = {});
 
+  // inline SVG icon from the sprite in index.html
+  U.ic = (n) => `<svg class="ic" aria-hidden="true"><use href="#i-${n}"/></svg>`;
+
+  // fills the left part of every range slider (used by the slider styling)
+  U.paintRanges = (root = document) => {
+    root.querySelectorAll('input[type="range"]').forEach((el) => {
+      const p = ((el.value - el.min) / (el.max - el.min || 1)) * 100;
+      el.style.setProperty('--p', p + '%');
+      if (!el._painted) { el._painted = true; el.addEventListener('input', () => el.style.setProperty('--p', ((el.value - el.min) / (el.max - el.min || 1)) * 100 + '%')); }
+    });
+  };
+
   U.$ = (s, r = document) => r.querySelector(s);
   U.$$ = (s, r = document) => Array.from(r.querySelectorAll(s));
 

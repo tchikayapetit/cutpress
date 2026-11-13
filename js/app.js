@@ -16,7 +16,7 @@
     const m = document.querySelector('meta[name="theme-color"]');
     if (m) m.content = t === 'dark' ? '#141310' : '#ecebe6';
     const b = U.$('#theme-toggle');
-    b.textContent = t === 'dark' ? '☀' : '☾';
+    b.innerHTML = U.ic(t === 'dark' ? 'sun' : 'moon');
     const label = I18N.t(t === 'dark' ? 'Light theme' : 'Dark theme');
     b.title = label;
     b.setAttribute('aria-label', label);

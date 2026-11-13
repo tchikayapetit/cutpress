@@ -527,7 +527,7 @@
   // ---------- UI ----------
   const QUICK_CUT = ['paper', 'shutter-slr', 'shutter-5d', 'shutter-holga', 'film-advance', 'polaroid-real', 'flash', 'click', 'none'];
   const QUICK_REVEAL = ['bass', 'impact', 'whoosh', 'news-sting', 'ding', 'none'];
-  const fmtOut = (el, v) => (el.dataset.fmt === 'x' ? Number(v).toFixed(1) + '×' : el.dataset.fmt === 's' ? Number(v).toFixed(1) + 's' : el.dataset.fmt === 'cps' ? Number(v).toFixed(1) + ' cuts/s' : v);
+  const fmtOut = (el, v) => (el.dataset.fmt === 'x' ? Number(v).toFixed(1) + '×' : el.dataset.fmt === 's' ? Number(v).toFixed(1) + 's' : el.dataset.fmt === 'cps' ? Number(v).toFixed(1) + ' cuts/s' : el.dataset.fmt === 'bpm' ? Math.round(v) + ' BPM' : el.dataset.fmt === 'pct' ? Math.round(v * 100) + '%' : v);
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
   MC.updateInfo = () => {
@@ -545,11 +545,11 @@
   };
   MC.setPlayButton = () => {
     const b = U.$('#mc-play');
-    b.textContent = MC.playing ? '❚❚ Pause' : '▶ Preview';
+    b.innerHTML = `${U.ic(MC.playing ? 'pause' : 'play')}<span>${MC.playing ? 'Pause' : 'Preview'}</span>`;
     b.setAttribute('aria-pressed', MC.playing);
     U.$('.phone').classList.toggle('playing', MC.playing);
     const ov = U.$('#mc-play-overlay');
-    ov.textContent = MC.playing ? '❚❚' : '▶';
+    ov.innerHTML = U.ic(MC.playing ? 'pause' : 'play');
     ov.setAttribute('aria-label', MC.playing ? 'Pause preview' : 'Play preview');
   };
 
@@ -693,16 +693,16 @@
     if (s.music === 'none') { name = 'No music'; meta = 'Sound effects only'; play = false; }
     else if (s.music === 'upload' && MC.track) { name = MC.track.name; meta = `${I18N.t('Your track')} · ~${MC.track.bpm} BPM`; play = false; }
     else { const tk = AE.track(s.music); name = tk.name; meta = `${I18N.t(tk.genre)} · ${tk.bpm} BPM · ${tk.tags.map((x) => I18N.t(x)).join(', ')}`; }
-    box.innerHTML = `${play ? '<button type="button" class="sc-play" aria-label="Preview track">▶</button>' : `<span class="sc-ico">${s.music === 'none' ? '∅' : '♪'}</span>`}
+    box.innerHTML = `${play ? '<button type="button" class="sc-play" aria-label="Preview track">' + U.ic('play') + '</button>' : `<span class="sc-ico">${U.ic(s.music === 'none' ? 'ban' : 'music')}</span>`}
       <div class="sc-main"><div class="sc-name">${esc(name)}</div><div class="sc-meta">${esc(meta)}</div></div>
       <button type="button" class="btn-sm" id="mc-music-change">Change</button>`;
     const pb = U.$('.sc-play', box);
     if (pb) pb.onclick = async () => {
-      if (pb.dataset.on) { AE.stopPreview(); pb.textContent = '▶'; delete pb.dataset.on; return; }
+      if (pb.dataset.on) { AE.stopPreview(); pb.innerHTML = U.ic('play'); delete pb.dataset.on; return; }
       MC.stop();
-      pb.textContent = '■';
+      pb.innerHTML = U.ic('stop');
       pb.dataset.on = 1;
-      await AE.preview('music', s.music, () => { pb.textContent = '▶'; delete pb.dataset.on; });
+      await AE.preview('music', s.music, () => { pb.innerHTML = U.ic('play'); delete pb.dataset.on; });
     };
     U.$('#mc-music-change', box).onclick = MC.openMusicLib;
   };
@@ -769,7 +769,8 @@
     MC.renderStyles();
     MC.renderMusicCard();
     MC.renderSfxPills();
-    U.$('#mc-logo-row').hidden = !MC.logoImg;
+    U.$('#mc-logo-remove').hidden = !MC.logoImg;
+    U.paintRanges();
     MC.drawWave();
   };
 
@@ -795,7 +796,7 @@
       const k = seg.dataset.seg;
       U.$$('button', seg).forEach((b) => (b.onclick = () => {
         const v = b.dataset.v;
-        MC.state[k] = /^[0-9.]+$/.test(v) ? parseFloat(v) : v;
+        MC.state[k] = seg.dataset.keep === 'str' ? v : /^[0-9.]+$/.test(v) ? parseFloat(v) : v;
         MC.syncControls();
         MC.rebuild();
         if (k === 'mode') { MC.styleGroup = v === 'photo' ? 'Old front pages' : 'All'; MC.renderStyles(); }
@@ -878,11 +879,11 @@
       const { img, src } = await U.normalizeImage(await U.fileToDataURL(f), 800);
       MC.logoImg = img;
       MC.state.logo = src;
-      U.$('#mc-logo-row').hidden = false;
+      U.$('#mc-logo-remove').hidden = false;
       MC.rebuild();
       e.target.value = '';
     });
-    U.$('#mc-logo-remove').onclick = () => { MC.logoImg = null; MC.state.logo = null; U.$('#mc-logo-row').hidden = true; MC.rebuild(); };
+    U.$('#mc-logo-remove').onclick = () => { MC.logoImg = null; MC.state.logo = null; U.$('#mc-logo-remove').hidden = true; MC.rebuild(); };
     U.$('#mc-audio-file').addEventListener('change', (e) => {
       const f = e.target.files[0];
       if (f) MC.loadTrack(f);
@@ -927,7 +928,7 @@
     MC.photos.forEach((img, i) => {
       const d = document.createElement('div');
       d.className = 'pthumb';
-      d.innerHTML = `<img alt="${I18N.t('Photo {n}', { n: i + 1 })}" src="${img.src}"><button type="button" aria-label="${I18N.t('Remove photo')}">✕</button>`;
+      d.innerHTML = `<img alt="${I18N.t('Photo {n}', { n: i + 1 })}" src="${img.src}"><button type="button" aria-label="${I18N.t('Remove photo')}">${U.ic('x')}</button>`;
       d.querySelector('button').onclick = () => { MC.photos.splice(i, 1); MC.renderPhotos(); MC.rebuild(); MC.renderStyleThumbs(); };
       box.appendChild(d);
     });

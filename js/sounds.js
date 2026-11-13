@@ -42,7 +42,7 @@
     U.$('#lib-count-music').textContent = AE.TRACKS.length;
     U.$('#lib-count-sfx').textContent = AE.SFX_LIB.length;
     const cb = U.$('#lib-cats');
-    cb.innerHTML = cats().map((c) => `<button type="button" class="pill${c === LIB.cat ? ' on' : ''}" data-cat="${esc(c)}">${c === 'Favorites' ? '♥ ' : ''}${esc(c)}</button>`).join('');
+    cb.innerHTML = cats().map((c) => `<button type="button" class="pill${c === LIB.cat ? ' on' : ''}" data-cat="${esc(c)}">${c === 'Favorites' ? U.ic('heart') : ''}${esc(c)}</button>`).join('');
     U.$$('[data-cat]', cb).forEach((b) => (b.onclick = () => { LIB.cat = b.dataset.cat; LIB.render(); }));
 
     const q = LIB.q.trim().toLowerCase();
@@ -56,28 +56,28 @@
     const slots = LIB.opts.slots && LIB.kind === 'sfx' ? LIB.opts.slots : null;
     let h = '';
     if (LIB.cat === 'All' && !q && LIB.kind === 'music') {
-      if (LIB.opts.allowNone) h += `<div class="lib-row special${sel === 'none' ? ' sel' : ''}"><span class="lib-ico">∅</span><div class="lib-main"><div class="lib-name">No music</div><div class="lib-meta">Only sound effects</div></div><button type="button" class="btn-sm lib-use" data-id="none">${sel === 'none' ? '✓ Selected' : 'Use'}</button></div>`;
+      if (LIB.opts.allowNone) h += `<div class="lib-row special${sel === 'none' ? ' sel' : ''}"><span class="lib-ico">${U.ic('ban')}</span><div class="lib-main"><div class="lib-name">No music</div><div class="lib-meta">Only sound effects</div></div><button type="button" class="btn-sm lib-use" data-id="none">${sel === 'none' ? '✓ Selected' : 'Use'}</button></div>`;
       if (LIB.opts.allowUpload) h += `<div class="lib-row special"><span class="lib-ico">⬆</span><div class="lib-main"><div class="lib-name">Upload my own track</div><div class="lib-meta">MP3, WAV or M4A. Tempo and drop are detected for you.</div></div><button type="button" class="btn-sm" id="lib-upload">Upload</button></div>`;
     }
     if (LIB.cat === 'All' && !q && LIB.kind === 'sfx' && LIB.opts.allowNone) {
-      h += `<div class="lib-row special${sel === 'none' ? ' sel' : ''}"><span class="lib-ico">∅</span><div class="lib-main"><div class="lib-name">No sound</div><div class="lib-meta">Silence for this moment</div></div><button type="button" class="btn-sm lib-use" data-id="none">${sel === 'none' ? '✓ Selected' : 'Use'}</button></div>`;
+      h += `<div class="lib-row special${sel === 'none' ? ' sel' : ''}"><span class="lib-ico">${U.ic('ban')}</span><div class="lib-main"><div class="lib-name">No sound</div><div class="lib-meta">Silence for this moment</div></div><button type="button" class="btn-sm lib-use" data-id="none">${sel === 'none' ? '✓ Selected' : 'Use'}</button></div>`;
     }
     for (const x of list) {
       const isSel = sel === x.id;
       const useBtns = slots
         ? slots.map((s) => `<button type="button" class="btn-sm lib-use" data-id="${x.id}" data-slot="${s.slot}">${esc(s.label)}</button>`).join('')
         : LIB.opts.onPick
-        ? `<button type="button" class="btn-sm lib-use${isSel ? ' on' : ''}" data-id="${x.id}">${isSel ? '✓ Selected' : 'Use'}</button>`
+        ? `<button type="button" class="btn-sm lib-use${isSel ? ' on' : ''}" data-id="${x.id}">${isSel ? U.ic('check') + 'Selected' : 'Use'}</button>`
         : '';
       h += `<div class="lib-row${isSel ? ' sel' : ''}${LIB.playing === x.id ? ' playing' : ''}" data-row="${x.id}">
-        <button type="button" class="lib-play" data-play="${x.id}" aria-label="Preview ${esc(x.name)}">${LIB.playing === x.id ? '■' : '▶'}</button>
+        <button type="button" class="lib-play" data-play="${x.id}" aria-label="Preview ${esc(x.name)}">${U.ic(LIB.playing === x.id ? 'stop' : 'play')}</button>
         <div class="lib-main"><div class="lib-name">${esc(x.name)}</div><div class="lib-meta">${esc(meta(x))}</div></div>
-        <button type="button" class="lib-icon${favs.has(x.id) ? ' fav' : ''}" data-fav="${x.id}" aria-label="Favorite">${favs.has(x.id) ? '♥' : '♡'}</button>
-        <button type="button" class="lib-icon" data-dl="${x.id}" title="Download WAV" aria-label="Download WAV">⬇</button>
+        <button type="button" class="lib-icon${favs.has(x.id) ? ' fav' : ''}" data-fav="${x.id}" aria-label="Favorite">${U.ic('heart')}</button>
+        <button type="button" class="lib-icon" data-dl="${x.id}" title="Download WAV" aria-label="Download WAV">${U.ic('download')}</button>
         ${useBtns}
       </div>`;
     }
-    if (!list.length) h += `<p class="lib-empty">${LIB.cat === 'Favorites' ? 'Tap ♡ on a sound to save it here.' : 'No sounds match your search.'}</p>`;
+    if (!list.length) h += `<p class="lib-empty">${LIB.cat === 'Favorites' ? 'Tap the heart on a sound to save it here.' : 'No sounds match your search.'}</p>`;
     const box = U.$('#lib-list');
     box.innerHTML = h;
 
@@ -121,7 +121,7 @@
       console.error(e);
       U.toast('Could not render this sound.');
     }
-    btn.textContent = '⬇';
+    btn.innerHTML = U.ic('download');
   };
 
   LIB.init = () => {

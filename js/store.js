@@ -155,7 +155,7 @@
         <img class="w-thumb" alt="" src="${r.thumb}">
         <div class="lib-main"><div class="lib-name">${esc(r.name)}</div><div class="lib-meta">${esc(fmtDate(r.date))}${r.size ? ' · ' + fmtSize(r.size) : ''}${r.dur ? ' · ' + r.dur.toFixed(1) + 's' : ''}</div></div>
         ${tab === 'projects' ? `<button type="button" class="btn-sm" data-act="open">${esc(T('Open'))}</button>` : `<button type="button" class="btn-sm" data-act="play">${esc(T('Play'))}</button><button type="button" class="btn-sm" data-act="dl">${esc(T('Download'))}</button>`}
-        <button type="button" class="lib-icon" data-act="del" aria-label="${esc(T('Delete'))}" title="${esc(T('Delete'))}">✕</button>
+        <button type="button" class="lib-icon" data-act="del" aria-label="${esc(T('Delete'))}" title="${esc(T('Delete'))}">${U.ic('x')}</button>
       </div>`;
     }
     box.innerHTML = h;

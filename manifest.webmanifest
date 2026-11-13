@@ -1,6 +1,6 @@
 {
-  "name": "CutPress — match cut maker",
-  "short_name": "CutPress",
+  "name": "MatchCut — match cut video maker",
+  "short_name": "MatchCut",
   "description": "Turn a word or a photo into a match cut across real-looking newspapers, magazines and posters. Works offline. Nothing is uploaded.",
   "start_url": "./index.html",
   "scope": "./",

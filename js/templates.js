@@ -679,7 +679,7 @@
     ring.addColorStop(0, '#f9ce34'); ring.addColorStop(0.5, '#ee2a7b'); ring.addColorStop(1, '#6228d7');
     g.fillStyle = ring; g.beginPath(); g.arc(m + 45, m + 50, 45, 0, 7); g.fill();
     g.fillStyle = '#ddd'; g.beginPath(); g.arc(m + 45, m + 50, 38, 0, 7); g.fill();
-    sc(g, F.interB, 28, (d.brand || 'daily.cutpress').toLowerCase().replace(/\s+/g, '.'), m + 110, m + 38, '#111', 0);
+    sc(g, F.interB, 28, (d.brand || 'daily.matchcut').toLowerCase().replace(/\s+/g, '.'), m + 110, m + 38, '#111', 0);
     sc(g, F.inter, 22, pick(r, ['Douala, Cameroon', 'Yaoundé', 'Lagos', 'Paris', 'Accra']), m + 110, m + 70, '#555', 0);
     const photo = pic(g, d.img, 0, 120, w, w, 'gloss', r);
     let y = 120 + w + 30;

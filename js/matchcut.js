@@ -435,7 +435,7 @@
     REC.showOverlay('Printing your video…');
     try {
       const s = MC.state;
-      const fname = name || 'cutpress-' + ((MC.state.mode === 'photo' ? MC.state.headline.split(/\s+/)[0] : MC.words()[MC.focusList()[0]]) || 'video').toLowerCase().replace(/[^a-z0-9]+/g, '');
+      const fname = name || 'matchcut-' + ((MC.state.mode === 'photo' ? MC.state.headline.split(/\s+/)[0] : MC.words()[MC.focusList()[0]]) || 'video').toLowerCase().replace(/[^a-z0-9]+/g, '');
       // fast path: encode every frame straight away with WebCodecs (MP4 only)
       if (s.format !== 'webm' && s.fastExport !== false && window.FX && FX.available()) {
         try {
@@ -473,7 +473,7 @@
     for (let i = 0; i < n; i++) {
       if (i > 0) { MC.state.seed = U.newSeed(); MC.rebuild(); }
       U.$('#export-title').textContent = `Recording variation ${i + 1} of ${n}…`;
-      const f = await MC.exportVideo(`cutpress-variation-${i + 1}`);
+      const f = await MC.exportVideo(`matchcut-variation-${i + 1}`);
       if (!f) break;
     }
     if (n > 1) U.toast(I18N.t('Exported {n} variations.', { n }));
@@ -898,8 +898,8 @@
       if (MC.playing) MC.restart();
     });
     U.$('#mc-save').onclick = () => {
-      const blob = new Blob([JSON.stringify({ app: 'cutpress', kind: 'matchcut', version: 2, state: MC.state }, null, 1)], { type: 'application/json' });
-      U.download(blob, 'cutpress-matchcut.json');
+      const blob = new Blob([JSON.stringify({ app: 'matchcut', kind: 'matchcut', version: 2, state: MC.state }, null, 1)], { type: 'application/json' });
+      U.download(blob, 'matchcut-project.json');
     };
     U.$('#mc-load').onclick = () => U.$('#mc-load-file').click();
     U.$('#mc-load-file').addEventListener('change', async (e) => {
@@ -915,7 +915,7 @@
         MC.rebuild();
         U.toast('Project loaded.');
       } catch (err) {
-        U.toast('That file is not a CutPress match cut project.');
+        U.toast('That file is not a MatchCut project.');
       }
     });
     window.addEventListener('resize', () => MC.drawWave());

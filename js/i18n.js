@@ -104,7 +104,7 @@
     'Exported {n} variations.': '{n} versions exportées.', 'Analyzing track…': 'Analyse de la musique…',
     'Detected ~{bpm} BPM. Drop set at {t}s. Click the waveform to move it.': '~{bpm} BPM détectés. Point de chute à {t} s. Cliquez sur l’onde pour le déplacer.',
     'Could not read that audio file.': 'Impossible de lire ce fichier audio.', 'Could not read {name}': 'Impossible de lire {name}', 'Project loaded.': 'Projet chargé.',
-    'That file is not a CutPress match cut project.': 'Ce fichier n’est pas un projet CutPress.', 'Music added to your video.': 'Musique ajoutée à votre vidéo.',
+    'That file is not a MatchCut project.': 'Ce fichier n’est pas un projet MatchCut.', 'Music added to your video.': 'Musique ajoutée à votre vidéo.',
     'Video export is not available in this browser. Try Chrome or Edge.': 'L’export vidéo n’est pas disponible dans ce navigateur. Essayez Chrome ou Edge.',
     'Set for {what}.': 'Défini pour : {what}.', 'Could not render this sound.': 'Impossible de générer ce son.',
     '{c} cuts · {s} cuts/s · {t}s · {w}×{h}': '{c} coupes · {s} coupes/s · {t} s · {w}×{h}', 'Your Photo': 'Votre photo', 'Photo {n}': 'Photo {n}', 'Remove photo': 'Retirer la photo',

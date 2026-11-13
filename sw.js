@@ -4,11 +4,11 @@
    - Scripts and styles carry a ?v= number, so each exact URL is saved once and never mixed
      with another version.
    - Sounds, icons, fonts, stock photos and scans are saved the first time they load. */
-const VERSION = 'v16';
+const VERSION = 'v17';
 const CORE = `core-${VERSION}`;
 const RUNTIME = `runtime-${VERSION}`;
 const PAGES = ['index.html', 'how.html'];
-const EXTRA = ['./', 'manifest.webmanifest', 'js/vendor/mp4-muxer.min.js', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/maskable-512.png', 'icons/apple-touch-icon.png', 'sounds/manifest.json'];
+const EXTRA = ['./', 'manifest.webmanifest', 'js/vendor/mp4-muxer.min.js', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/maskable-512.png', 'icons/apple-touch-icon.png', 'icons/logo.svg', 'icons/favicon-48.png', 'sounds/manifest.json'];
 const MAX_RUNTIME = 140;
 const SLOW_MS = 3500;
 

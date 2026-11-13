@@ -1,4 +1,4 @@
-# CutPress
+# MatchCut
 
 Turn a word or a photo into a match cut across real-looking newspapers, magazines and books.
 There is no backend. Page rendering, sound, and video export all run in the browser, and nothing is uploaded.

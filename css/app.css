@@ -607,3 +607,12 @@ select { -webkit-appearance: none; appearance: none; background-image: url("data
 @media (max-width: 920px) {
   .make { position: sticky !important; bottom: calc(12px + env(safe-area-inset-bottom)); z-index: 15; width: min(100%, 320px); box-shadow: 0 10px 26px -8px rgba(0, 0, 0, 0.5); }
 }
+
+/* brand mark + seo text */
+.logo { display: inline-flex; align-items: center; gap: 8px; }
+.logo .mk { width: 28px; height: 28px; border-radius: 7px; flex: none; }
+@media (max-width: 920px) { .logo .mk { width: 24px; height: 24px; border-radius: 6px; } }
+.seo { max-width: 760px; margin: 28px auto 8px; padding: 0 20px; color: var(--muted, #6d685b); font-size: 13.5px; line-height: 1.6; }
+.seo h2 { font-family: var(--serif); font-size: 20px; color: var(--ink); margin: 0 0 8px; }
+.seo h3 { font-size: 14px; color: var(--ink); margin: 16px 0 2px; }
+.seo p { margin: 0; }

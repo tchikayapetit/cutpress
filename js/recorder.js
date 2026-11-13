@@ -78,7 +78,7 @@
   REC.share = async () => {
     if (!REC.canShare()) return U.toast('Sharing files is not supported in this browser. Use the downloaded file.');
     try {
-      await navigator.share({ files: [REC.lastFile], title: 'My CutPress video' });
+      await navigator.share({ files: [REC.lastFile], title: 'My MatchCut video' });
     } catch (e) {
       /* user closed the share sheet */
     }

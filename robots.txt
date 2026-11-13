@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /sounds/
+
+Sitemap: https://matchcut.site/sitemap.xml

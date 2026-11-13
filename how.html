@@ -3,17 +3,32 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>How it works · CutPress</title>
-<meta name="description" content="How to make a match cut video: write a word or add a photo, pick the papers, choose the sound and make your video. Works offline. Nothing is uploaded.">
+<title>How MatchCut works: make a match cut video</title>
+<meta name="description" content="How to make a match cut video: write a word or add a photo, pick the papers, choose the sound and make your video. Free, works offline, nothing is uploaded.">
+<link rel="canonical" href="https://matchcut.site/how.html">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="MatchCut">
+<meta property="og:title" content="How MatchCut works: make a match cut video">
+<meta property="og:description" content="How to make a match cut video: write a word or add a photo, pick the papers, choose the sound and make your video. Free, works offline, nothing is uploaded.">
+<meta property="og:url" content="https://matchcut.site/how.html">
+<meta property="og:image" content="https://matchcut.site/icons/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="MatchCut logo and pages of newspaper with a highlighted word">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How MatchCut works: make a match cut video">
+<meta name="twitter:description" content="How to make a match cut video: write a word or add a photo, pick the papers, choose the sound and make your video. Free, works offline, nothing is uploaded.">
+<meta name="twitter:image" content="https://matchcut.site/icons/og-image.png">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#ecebe6">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="icons/icon-192.png">
+<link rel="icon" type="image/svg+xml" href="icons/logo.svg">
 <script>try{var __t=localStorage.getItem("cutpress.theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.dataset.theme=__t;var __l=localStorage.getItem("cutpress.lang")||((navigator.language||"en").toLowerCase().indexOf("fr")===0?"fr":"en");document.documentElement.lang=__l;}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap">
-<link rel="stylesheet" href="css/app.css?v=37">
+<link rel="stylesheet" href="css/app.css?v=38">
 <link rel="stylesheet" href="css/how.css?v=22">
 </head>
 <body>
@@ -43,7 +58,7 @@
 </svg>
 <header class="mast how-top">
   <div class="mast-in">
-    <a class="logo" href="index.html" aria-label="CutPress">CutPress<span>.</span></a>
+    <a class="logo" href="index.html" aria-label="MatchCut"><img class="mk" src="icons/logo.svg" alt="" width="28" height="28">MatchCut<span>.</span></a>
     <div class="tools">
       <a class="ghost" id="back" href="index.html">← App</a>
       <button type="button" id="lang-toggle" class="ghost icon" aria-label="Language">FR</button>
@@ -124,7 +139,7 @@
     const tb = document.getElementById('theme-toggle');
     tb.innerHTML = '<svg class="ic" aria-hidden="true"><use href="#i-' + (dark ? 'sun' : 'moon') + '"/></svg>';
     tb.title = dark ? UI.light[l] : UI.theme[l];
-    document.title = (l ? 'Comment ça marche' : 'How it works') + ' · CutPress';
+    document.title = (l ? 'Comment ça marche' : 'How it works') + ' · MatchCut';
   }
   document.getElementById('lang-toggle').onclick = () => {
     const n = lang() ? 'en' : 'fr';

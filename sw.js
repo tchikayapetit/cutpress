@@ -4,7 +4,7 @@
    - Scripts and styles carry a ?v= number, so each exact URL is saved once and never mixed
      with another version.
    - Sounds, icons, fonts, stock photos and scans are saved the first time they load. */
-const VERSION = 'v17';
+const VERSION = 'v18';
 const CORE = `core-${VERSION}`;
 const RUNTIME = `runtime-${VERSION}`;
 const PAGES = ['index.html', 'how.html'];

@@ -36,7 +36,7 @@ It is a static site with no build step. Drag the folder into Netlify Drop, or im
 
 **Sound.** 67 synthesized sound effects (paper shuffle, camera shutter, film advance, Polaroid, flash pop, whooshes, impacts and more), the same sounds as the first version. There are also 34 generated music tracks, and you can upload your own song (tempo and drop are detected). Any sound can be previewed, saved as a favourite or downloaded as WAV.
 
-**Length and speed.** Choose any video length from 2 to 60 seconds and any cut speed from 0.5 to 15 cuts per second. The default is 6 seconds at 8 cuts per second. With music, the speed locks to the beat. Long videos reuse up to 48 unique pages to keep memory low.
+**Length and speed.** Choose any video length from 2 to 60 seconds and any cut speed from 0.5 to 30 cuts per second. The default is 6 seconds at 8 cuts per second. With music, the speed locks to the beat. Long videos reuse up to 48 unique pages to keep memory low.
 
 **Old paper look.** Photo cut has an on/off sepia, faded, grainy grade over every frame. The pile, newsstand and archive-table scenes mix in real scanned front pages from 1900–1960. These are public domain and are listed live from Wikimedia Commons (Category: Front pages of newspapers of the United States).
 
@@ -80,13 +80,3 @@ It is a static site with no build step. Drag the folder into Netlify Drop, or im
 - `js/matchcut.js`: timeline, playback, pre-rendering, export, controls
 - `js/recorder.js`: canvas + audio video recorder
 - `js/util.js`, `js/app.js`: helpers and startup
-
-## Deploy to Vercel
-
-This is a static site with no build step. In Vercel: **Add New → Project → import this repository**, set **Framework Preset: Other**, leave the build command and output directory empty, and deploy. `vercel.json` sets the cache headers. When you change files, raise `VERSION` at the top of `sw.js` so visitors get the update.
-
-## Licences
-
-- Recorded sounds in `sounds/`: see `sounds/CREDITS.md` (CC0, public domain and CC BY).
-- `js/vendor/mp4-muxer.min.js`: MIT, © Vanilagy.
-- Stock photos are loaded from Unsplash and old newspaper scans from Wikimedia Commons (public domain) at runtime.
